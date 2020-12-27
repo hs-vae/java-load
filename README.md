@@ -1,8 +1,10 @@
 # 前言
 
-**好记性不如烂笔头**
+**面向对象面向君，不负代码不负卿**
 
-**java-load 记录了本人hs学习Java SE基础的全过程**
+**java-load 记录了本人hs-vae学习Java SE基础的全过程**
+
+**同时[CSDN](https://blog.csdn.net/qq_46350148?spm=1001.2100.3001.5343)和[知乎](https://www.zhihu.com/people/mo-0118)以及[个人博客](https://hs-vae.com/)已实时同步更新，欢迎访问**
 
 **希望在记录的过程中不断提升自己**
 
@@ -10,7 +12,7 @@
 
 **如果我的记录帮助到了你**
 
-**还希望你能给我一个Star**
+**希望大佬能给我一个免费的Star**
 
 **你的点赞是我记录的动力，感谢！**
 
@@ -25,7 +27,7 @@
 - [x] [集合](https://github.com/hs-vae/java-load/tree/main/%E9%9B%86%E5%90%88)
 - [x] [IO流](https://github.com/hs-vae/java-load/tree/main/IO%E6%B5%81)
 - [x] [JDBC](https://github.com/hs-vae/java-load/tree/main/JDBC)
-- [x] [Java语言程序设计实验](https://github.com/hs-vae/java-load/tree/main/%E5%AE%9E%E9%AA%8C)
+- [x] [Java语言程序设计实验](https://github.com/hs-vae/java-load/tree/main/Java%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E9%AA%8C)
 - [ ] 异常
 
 
