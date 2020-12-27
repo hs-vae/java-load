@@ -1,12 +1,6 @@
-<!-- toc -->
-
-实训一下载地址:https://picture.hs-vae.com/practice1.zip
-
-里面包含了com.qst.dms包,log.txt文件,以及实验报告
+[TOC]
 
 ## 一、基本任务:(实现代码包括了三个需要编写的方法)
-
-提醒一下:我写class的属于vae项目里面，我这里为了使用相对路径简便,把log.txt文件放在vae项目里,这样在写路径的时候可以直接写"log.txt"
 
 1) 完成如下图所示log.txt日志文件的分析，编写方法分析访问量排名前10的IP地址打印输出。 
 
@@ -93,47 +87,67 @@ public class Log implements Serializable {            //序列化和反序列化
 ### 2.实现代码
 
 ```java
-package Demo5Experiment.Demo1;
+package Experiment.Demo1;
 /*
       实验一基本任务：
             1.打印排名前十IP地址
             2.输出不同的"ERROR"异常信息
             3.对象序列化
  */
+import com.microsoft.schemas.vml.impl.CTRectImpl;
+
 import java.io.*;
 import java.util.*;
 public class Demo1Experiment {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        //1.打印排名前十IP地址
-        printIp(new FileReader("log.txt"));  
-        //2.输出不同的异常信息
-        printError(new FileReader("log.txt"));
-        //3.Log对象的序列化
-        objectLog(new FileReader("log.txt"),new FileOutputStream("objectlog.txt"),new FileInputStream("objectlog.txt"));
+        //打印排名前十IP地址
+        printIp(new FileReader("vae/log.txt"));
+        //输出不同的异常信息
+        printError(new FileReader("vae/log.txt"));
+        //Log对象的序列化
+        objectLog(new FileReader("vae/log.txt"),new FileOutputStream("vae/objectlog.txt"),new FileInputStream("vae/objectlog.txt"));
     }
-    
-    //1.构造printIp方法
     private static void printIp(FileReader file) throws IOException {
         BufferedReader br = new BufferedReader(file);
         String line;
+        Map<String,Integer> map = new HashMap<>();
+        while ((line= br.readLine())!=null){
+            String[] split = line.split(",", 5);
+            String key = split[2].trim().replace(" ", "");
+            //判断这个集合是否包含这个ip
+            if (map.containsKey(key)){
+                //若包含,那么value加1
+                Integer value = map.get(key);
+                value++;
+                map.put(key,value);
+            }else {
+                //若不包含,这时候初始值为1
+                map.put(key,1);
+            }
+        }
+        //HashMap集合是无序的要想给出现的次数排序那么就应该放到List集合里
+        List<Map.Entry<String,Integer>> list = new ArrayList<>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o2.getValue()-o1.getValue(); //降序
+            }
+        });
         System.out.println("访问量排名前十的IP地址:");
         for (int i = 0; i < 10; i++) {
-            line = br.readLine();
-            String[] arr=line.split(",",5);
-            System.out.println(arr[2]);
+            System.out.println(list.get(i));
         }
         br.close();
     }
-    
-    //2.构造printError方法
+
     private static void printError(FileReader file) throws IOException {
         BufferedReader br = new BufferedReader(file);
         ArrayList<String> list=new ArrayList<>(); //存储"ERROR"和"LOG"
-        Set<String> set=new HashSet<String>();    //Hashset类比较特殊,可以去重,所以可以采用add方法解决异常信息重复问题
+        Set<String> set=new HashSet<>();    //Hashset类比较特殊,可以去重,所以可以采用add方法解决异常信息重复问题
         String line;
         int i=0;
         while ((line = br.readLine()) != null) {
-            String[] arr = line.split("\\,",5);
+            String[] arr = line.split(",",5);
             list.add(arr[3]);
                 if(list.get(i).trim().equals("ERROR")){   //注意这里得利用String类的trim除去空格,而且需要equals方法判断是否相等(因为存储的还是地址值),而不是==
                      set.add(arr[4]);
@@ -142,12 +156,10 @@ public class Demo1Experiment {
         }
         System.out.println("错误异常信息：");
         for(String s:set){
-            System.out.println(s);    //Hashset由于没有索引值,只能用加强的for循环和迭代器来遍历
+            System.out.println(s);    //HashSet由于没有索引值,只能用加强的for循环和迭代器来遍历
         }
         br.close();
     }
-    
-    //3.构造对象序列化objectLog方法
     private static void objectLog(FileReader file1,FileOutputStream file2,FileInputStream file3) throws IOException, ClassNotFoundException {
         ObjectOutputStream oos =new ObjectOutputStream(file2);
         BufferedReader br =new BufferedReader(file1);
