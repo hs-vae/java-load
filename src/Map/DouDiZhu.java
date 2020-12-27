@@ -1,0 +1,97 @@
+package com.hs_vae.Map;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
+/*
+     斗地主综合案例:有序版本
+      1.准备牌
+      2.洗牌
+      3.发牌
+      4.排序
+      5.看牌
+ */
+public class DouDiZhu {
+    public static void main(String[] args) {
+        //1.准备牌
+        //创建一个Map集合,存储牌的索引和组装好的牌
+        HashMap<Integer,String> poker = new HashMap<>();
+        //创建一个List集合,存储牌的索引
+        ArrayList<Integer> pokerIndex = new ArrayList<>();
+        //定义两个集合,存储花色和牌的序号
+        List<String> colors = List.of("♥","♠","♣","♦");
+        List<String> numbers = List.of("2","A","K","Q","J","10","9","8","7","6","5","4","3");
+        //把大王和小王存储到集合中
+        //定义一个牌的索引
+        int index=0;
+        poker.put(index,"大王");
+        pokerIndex.add(index);
+        index++;
+        poker.put(index,"小王");
+        pokerIndex.add(index);
+        index++;
+        //循环嵌套遍历两个集合,组装52张牌,存储到poker集合中
+        for (String number : numbers) {
+            for (String color : colors) {
+                poker.put(index,color+number);
+                pokerIndex.add(index);
+                index++;
+            }
+        }
+        /*
+            洗牌
+         */
+        Collections.shuffle(pokerIndex);
+        /*
+            发牌
+            定义4个List集合,存储3个玩家牌的索引和底牌的索引
+         */
+        ArrayList<Integer> playerA = new ArrayList<>();
+        ArrayList<Integer> playerB = new ArrayList<>();
+        ArrayList<Integer> playerC = new ArrayList<>();
+        ArrayList<Integer> diPai = new ArrayList<>();
+        //遍历存储牌索引的List集合,获取每一个牌的索引
+        for (int i = 0; i < pokerIndex.size(); i++) {
+            Integer it = pokerIndex.get(i);
+            //先判断底牌
+            if (i>=51){
+                diPai.add(it);
+            }else if (i%3==0){
+                //给玩家A发牌
+                playerA.add(it);
+            }else if (i%3==1){
+                //给玩家B发牌
+                playerB.add(it);
+            }else if (i%3==2){
+                //给玩家C发牌
+                playerC.add(it);
+            }
+        }
+        //使用Collections工具类的sort方法排序
+        Collections.sort(playerA);
+        Collections.sort(playerB);
+        Collections.sort(playerC);
+        Collections.sort(diPai);
+        /*
+             看牌
+         */
+        loolPoker("玩家A",poker,playerA);
+        loolPoker("玩家B",poker,playerB);
+        loolPoker("玩家C",poker,playerC);
+        loolPoker("底牌",poker,diPai);
+    }
+    //定义一个看牌的方法
+    public static void loolPoker(String name,HashMap<Integer,String> poker,ArrayList<Integer> list){
+        //输出玩家的名称不换行
+        System.out.print(name+":");
+        //遍历玩家或者底牌集合,获取牌的索引
+        for (Integer key : list) {
+            //根据牌的索引,在Map集合中找到对应的牌
+            String value = poker.get(key);
+            System.out.print(value+",");
+        }
+        System.out.println();
+    }
+}
