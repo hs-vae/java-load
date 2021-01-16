@@ -38,5 +38,6 @@
 
 
 - [ ] 注解
+- [x] [设计模式](https://github.com/hs-vae/java-load/tree/main/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F)
 
 # 持续更新中~
